@@ -1,39 +1,45 @@
 ﻿using MB1008.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace MB1008.Controllers
 {
     public class HomeController : Controller
     {
-        //a
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory)
+        public HomeController(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory)
         {
-            _logger = logger;
             _dbContext = dbContext;
             _httpClientFactory = httpClientFactory;
         }
-        //a
-
-
-        private readonly ILogger<HomeController> _logger;
-
 
         public IActionResult Index()
         {
-
-
-            return View();
+            var exchangeRates = _dbContext.ExchangeRates.ToList();
+            return View(exchangeRates);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> ConvertCurrency(string selectedCurrency, DateTime selectedDate)
         {
-            return View();
+            var exchangeRate = _dbContext.ExchangeRates
+                .FirstOrDefault(r => r.FromCurrency == selectedCurrency && r.ToCurrency == "TRY" && r.Date.Date == selectedDate.Date);
+
+            if (exchangeRate == null)
+            {
+                // Handle currency not found for the selected date
+                return RedirectToAction("Index"); // You can redirect to the same page or an error page
+            }
+
+            // Perform currency conversion logic if needed
+
+            return View("Index", _dbContext.ExchangeRates.ToList()); // Return the updated view with exchange rates
         }
 
         [HttpGet]
@@ -66,18 +72,41 @@ namespace MB1008.Controllers
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction("Index"); // Redirect to your desired page
-
         }
 
+        public IActionResult TCMB_DATA()
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        // last added
+        [HttpPost]
+        public IActionResult GetExchangeRate(string fromCurrency, string toCurrency, DateTime selectedDate)
+        {
+            var exchangeRate = _dbContext.ExchangeRates
+                .FirstOrDefault(r =>
+                    r.FromCurrency == fromCurrency &&
+                    r.ToCurrency == toCurrency &&
+                    r.Date.Date == selectedDate.Date);
+
+            if (exchangeRate != null)
+            {
+                return Json(new { success = true, rate = exchangeRate.BuyRate });
+            }
+
+            return Json(new { success = false });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
     }
 }
+

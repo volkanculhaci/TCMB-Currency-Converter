@@ -1,15 +1,215 @@
-﻿@{
+﻿@model List<ExchangeRate>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-
 
 <div class="tapestry-wrapper">
+    <div class="preset--light">
+        <div class="tapestry-card-content">
+            <div class="np-theme-personal">
+                <!-- Currency Converter Section -->
+                <div class="_ccConverter_agd50_1">
+                    <div class="_ccCalculator_agd50_10">
+                        <!-- Source Currency Input -->
+                        <div class="form-group">
+                            <label for="selectedCurrency">Source Currency</label>
+                            <select class="form-control" id="selectedCurrency">
+                                <!-- Add options for source currencies -->
+                                <option value="USD">USD</option>
+                                <option value="TRY">TRY</option>
+                                <option value="EUR">EUR</option>
+                                <!-- Add more currency options as needed -->
+                            </select>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input class="form-control" id="amount" type="number" step="any" placeholder="Enter amount" value="4">
+                        </div>
+
+                        <!-- Target Currency Input -->
+                        <div class="form-group">
+                            <label for="toCurrency">Target Currency</label>
+                            <select class="form-control" id="toCurrency">
+                                <!-- Add options for target currencies -->
+                                <option value="TRY">TRY</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <!-- Add more currency options as needed -->
+                            </select>
+                        </div>
+
+                        <!-- Selected Date Input -->
+                        <div class="form-group">
+                            <label for="selectedDate">Selected Date</label>
+                            <input class="form-control" id="selectedDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+
+                        <!-- Conversion Information -->
+                        <div class="form-group">
+                            <label for="converted-amount">Converted Amount</label>
+                            <input class="form-control" id="converted-amount" type="text">
+                        </div>
+
+                        <!-- Convert Button -->
+                        <div class="_ccCalculator__cta_agd50_90">
+                            <button class="btn btn-primary btn-lg btn-block" id="convert-button" onclick="updateConvertedAmount()">Convert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="exchange-rates-table">
+    <h2 class="table-title">Exchange Rates</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover modern-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>From Currency</th>
+                    <th>To Currency</th>
+                    <th>Buy Rate</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rate in Model.Where(r => r.Date.Date == DateTime.Now.Date))
+                {
+                    <tr>
+                        <td>@rate.FromCurrency</td>
+                        <td>@rate.ToCurrency</td>
+                        <td>@rate.BuyRate.ToString("F3")</td>
+                        <td>@rate.Date.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function updateConvertedAmount() {
+        var fromCurrency = document.getElementById("selectedCurrency").value;
+        var amount = parseFloat(document.getElementById("amount").value);
+        var toCurrency = document.getElementById("toCurrency").value;
+        var selectedDate = new Date(document.getElementById("selectedDate").value);
+
+        fetch(`/Home/GetExchangeRate?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&selectedDate=${selectedDate.toISOString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var rate = data.rate;
+                    var convertedAmount = (amount * rate).toFixed(6);
+                    document.getElementById("converted-amount").value = convertedAmount;
+                } else {
+                    document.getElementById("converted-amount").value = "No data available for the selected criteria.";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("converted-amount").value = "An error occurred.";
+            });
+    }
+</script>
+
+<style>
+    .tapestry-wrapper {
+        float: left;
+        width: 50%;
+        padding: 15px;
+    }
+
+    .exchange-rates-table {
+        margin-top: 20px;
+    }
+
+    .table-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .modern-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .modern-table th,
+        .modern-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .modern-table th {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s;
+        }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+
+
+
+
+@*// BURASI BASLANGIC 
+@model List<ExchangeRate>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exchange Rates</title>
+</head>
+<body>
+    <h2>Exchange Rates</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>From Currency</th>
+                <th>To Currency</th>
+                <th>Buy Rate</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rate in Model)
+            {
+                <tr>
+                    <td>@rate.FromCurrency</td>
+                    <td>@rate.ToCurrency</td>
+                    <td>@rate.BuyRate</td>
+                    <td>@rate.Date.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+// BURASI MODEL CIKTISININ BITISI*@
+
+
+@*<div class="tapestry-wrapper">
     <!-- ... other content ... -->
     <div class="preset--light">
         <!-- ... other content ... -->
@@ -91,7 +291,7 @@
                             <label for="converted-amount">Converted Amount</label>
                             <input class="form-control" id="converted-amount" type="text">
 
-                             
+
                         </div>
 
                         <!-- Date Option -->
@@ -110,4 +310,4 @@
         </div>
     </div>
 </div>
-
+*@
