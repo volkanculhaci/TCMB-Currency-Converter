@@ -4,8 +4,37 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
 
-<div class="tapestry-wrapper">
+    .main-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 40px;
+    }
+
+    .tapestry-wrapper {
+        flex: 1;
+        background-color: #f0f0f0; /* Example background color */
+        padding: 20px;
+        border-radius: 10px;
+        width: 70%; /* Adjust the width as needed */
+        max-width: 400px;
+
+    }
+
+    .exchange-rates-table {
+        flex: 1;
+        background-color: #f0f0f0; /* Example background color */
+        padding: 20px;
+        border-radius: 10px;
+        width: 30%; /* Adjust the width as needed */
+    }
+
+</style>
+<div class="main-container">
+    <div class="tapestry-wrapper">
     <div class="preset--light">
         <div class="tapestry-card-content">
             <div class="np-theme-personal">
@@ -63,111 +92,94 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-<div class="exchange-rates-table">
-    <h2 class="table-title">Exchange Rates</h2>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover modern-table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>From Currency</th>
-                    <th>To Currency</th>
-                    <th>Buy Rate</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var rate in Model.Where(r => r.Date.Date == DateTime.Now.Date))
-                {
+    <div class="exchange-rates-table">
+        <h2 class="table-title">Exchange Rates</h2>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover modern-table">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@rate.FromCurrency</td>
-                        <td>@rate.ToCurrency</td>
-                        <td>@rate.BuyRate.ToString("F3")</td>
-                        <td>@rate.Date.ToString("yyyy-MM-dd")</td>
+                        <th>From Currency</th>
+                        <th>To Currency</th>
+                        <th>Buy Rate</th>
+                        <th>Date</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var rate in Model.Where(r => r.Date.Date == DateTime.Now.Date))
+                    {
+                        <tr>
+                            <td>@rate.FromCurrency</td>
+                            <td>@rate.ToCurrency</td>
+                            <td>@rate.BuyRate.ToString("F3")</td>
+                            <td>@rate.Date.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+
 <script>
+    function getExchangeRate(fromCurrency, toCurrency, selectedDate) {
+        return fetch(`/Home/GetExchangeRate?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&selectedDate=${selectedDate.toISOString()}`)
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            });
+    }
+
+    function calculateConvertedAmount(amount, rate) {
+        console.log('Calculating converted amount...');
+        return (amount * rate).toFixed(6);
+    }
+
+    function displayConvertedAmount(convertedAmount) {
+        console.log('Displaying converted amount:', convertedAmount);
+        document.getElementById("converted-amount").value = convertedAmount;
+    }
+
+    function displayErrorMessage(message) {
+        console.log('Displaying error message:', message);
+        document.getElementById("converted-amount").value = message;
+    }
+
     function updateConvertedAmount() {
+        console.log('Updating converted amount...');
         var fromCurrency = document.getElementById("selectedCurrency").value;
         var amount = parseFloat(document.getElementById("amount").value);
         var toCurrency = document.getElementById("toCurrency").value;
         var selectedDate = new Date(document.getElementById("selectedDate").value);
 
-        fetch(`/Home/GetExchangeRate?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&selectedDate=${selectedDate.toISOString()}`)
-            .then(response => response.json())
+        console.log('Selected currency:', fromCurrency);
+        console.log('Amount:', amount);
+        console.log('Target currency:', toCurrency);
+        console.log('Selected date:', selectedDate);
+
+        getExchangeRate(fromCurrency, toCurrency, selectedDate)
             .then(data => {
                 if (data.success) {
+                    console.log('Exchange rate data:', data);
                     var rate = data.rate;
-                    var convertedAmount = (amount * rate).toFixed(6);
-                    document.getElementById("converted-amount").value = convertedAmount;
+                    var convertedAmount = calculateConvertedAmount(amount, rate);
+                    displayConvertedAmount(convertedAmount);
                 } else {
-                    document.getElementById("converted-amount").value = "No data available for the selected criteria.";
+                    console.log('No exchange rate data available.');
+                    displayErrorMessage("No data available for the selected criteria.");
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById("converted-amount").value = "An error occurred.";
+                displayErrorMessage("An error occurred.");
             });
     }
 </script>
 
-<style>
-    .tapestry-wrapper {
-        float: left;
-        width: 50%;
-        padding: 15px;
-    }
-
-    .exchange-rates-table {
-        margin-top: 20px;
-    }
-
-    .table-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .modern-table {
-        border-collapse: separate;
-        border-spacing: 0;
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-        .modern-table th,
-        .modern-table td {
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .modern-table th {
-            background-color: #343a40;
-            color: #ffffff;
-        }
-
-        .modern-table tbody tr:hover {
-            background-color: #f8f9fa;
-            transition: background-color 0.2s;
-        }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-</style>
 
 
 
