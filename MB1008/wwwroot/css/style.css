@@ -1,0 +1,113 @@
+﻿
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* Styling for the currency converter container */
+.tapestry-wrapper {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for form elements */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Styling for labels */
+label {
+    font-weight: bold;
+}
+
+/* Styling for select inputs */
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+/* Styling for text inputs */
+input[type="number"],
+input[type="date"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+/* Styling for disabled inputs */
+input:disabled {
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+}
+
+/* Styling for the Convert button */
+#convert-button {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    /* Hover effect for the Convert button */
+    #convert-button:hover {
+        background-color: #2980b9;
+    }
+
+/* Styling for conversion information */
+#converted-amount {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Styling for date input */
+input[type="date"] {
+    background-color: white;
+}
+
+/* Styling for date label */
+#selected-date::-webkit-datetime-edit-text {
+    color: #333;
+}
+
+/* Styling for date arrows */
+#selected-date::-webkit-inner-spin-button,
+#selected-date::-webkit-clear-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Styling for form elements in responsive view */
+@media (max-width: 767px) {
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    input,
+    select {
+        font-size: 14px;
+    }
+
+    #convert-button {
+        font-size: 16px;
+    }
+}

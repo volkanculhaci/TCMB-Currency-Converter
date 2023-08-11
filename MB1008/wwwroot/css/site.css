@@ -1,0 +1,108 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+
+/* Override Bootstrap button styles */
+.btn-primary {
+    background-color: #ff9900;
+    border-color: #ff9900;
+    color: white;
+}
+
+/* Add background color to the form */
+.form-container {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the dropdowns */
+.dropdown-menu {
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+}
+
+.dropdown-item {
+    color: #fff;
+}
+
+/* Style the conversion result */
+.result-container {
+    background-color: #3399ff;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the text area */
+.text-area {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Style the convert button */
+.convert-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .convert-button:hover {
+        background-color: #45a049;
+    }
+
+/* Style the date picker */
+.date-picker {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style the currency options */
+.currency-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Style the input fields */
+.form-control {
+    border-radius: 5px;
+}
+
+/* Style the select dropdown */
+.select-dropdown {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Style the header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style the container */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}

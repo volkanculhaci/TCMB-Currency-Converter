@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+
+<div class="tapestry-wrapper">
+    <!-- ... other content ... -->
+    <div class="preset--light">
+        <!-- ... other content ... -->
+        <div class="tapestry-card-content">
+            <div class="np-theme-personal">
+                <!-- Currency Converter Section -->
+                <div class="_ccConverter_agd50_1">
+                    <div class="_ccCalculator_agd50_10">
+                        <!-- Source Currency Input -->
+                        <div class="form-group">
+                            <label for="source-currency">Source Currency</label>
+                            <select class="form-control" id="source-currency">
+                                <!-- Add options for source currencies -->
+                                <option value="TRY">TRY</option>
+                                <option value="USD">USD</option>
+                                <option value="AUD">AUD</option>
+                                <option value="DKK">DKK</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="SEK">SEK</option>
+                                <option value="CAD">CAD</option>
+                                <option value="KWD">KWD</option>
+                                <option value="NOK">NOK</option>
+                                <option value="SAR">SAR</option>
+                                <option value="JPY">JPY</option>
+                                <option value="BGN">BGN</option>
+                                <option value="RON">RON</option>
+                                <option value="RUB">RUB</option>
+                                <option value="IRR">IRR</option>
+                                <option value="CNY">CNY</option>
+                                <option value="PKR">PKR</option>
+                                <option value="QAR">QAR</option>
+                                <option value="KRW">KRW</option>
+                                <option value="AZN">AZN</option>
+                                <option value="AED">AED</option>
+                            </select>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input class="form-control" id="amount" type="number" step="any" placeholder="Enter amount" value="4">
+                        </div>
+
+                        <!-- Target Currency Input -->
+                        <div class="form-group">
+                            <label for="target-currency">Target Currency</label>
+                            <select class="form-control" id="target-currency">
+                                <!-- Add options for target currencies -->
+                                <option value="TRY">TRY</option>
+                                <option value="USD">USD</option>
+                                <option value="AUD">AUD</option>
+                                <option value="DKK">DKK</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="SEK">SEK</option>
+                                <option value="CAD">CAD</option>
+                                <option value="KWD">KWD</option>
+                                <option value="NOK">NOK</option>
+                                <option value="SAR">SAR</option>
+                                <option value="JPY">JPY</option>
+                                <option value="BGN">BGN</option>
+                                <option value="RON">RON</option>
+                                <option value="RUB">RUB</option>
+                                <option value="IRR">IRR</option>
+                                <option value="CNY">CNY</option>
+                                <option value="PKR">PKR</option>
+                                <option value="QAR">QAR</option>
+                                <option value="KRW">KRW</option>
+                                <option value="AZN">AZN</option>
+                                <option value="AED">AED</option>
+                            </select>
+                        </div>
+
+                        <!-- Conversion Information -->
+                        <div class="form-group">
+                            <label for="converted-amount">Converted Amount</label>
+                            <input class="form-control" id="converted-amount" type="text">
+
+                             
+                        </div>
+
+                        <!-- Date Option -->
+                        <div class="form-group">
+                            <label for="selected-date">Selected Date</label>
+                            <input class="form-control" id="selected-date" type="date" value="2023-08-10">
+                        </div>
+
+                        <!-- Convert Button -->
+                        <div class="_ccCalculator__cta_agd50_90">
+                            <button class="btn btn-primary btn-lg btn-block" id="convert-button">Convert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
