@@ -4,35 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-
-    .main-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 20px;
-        gap: 40px;
-    }
-
-    .tapestry-wrapper {
-        flex: 1;
-        background-color: #f0f0f0; /* Example background color */
-        padding: 20px;
-        border-radius: 10px;
-        width: 70%; /* Adjust the width as needed */
-        max-width: 400px;
-
-    }
-
-    .exchange-rates-table {
-        flex: 1;
-        background-color: #f0f0f0; /* Example background color */
-        padding: 20px;
-        border-radius: 10px;
-        width: 30%; /* Adjust the width as needed */
-    }
-
-</style>
 <div class="main-container">
     <div class="tapestry-wrapper">
     <div class="preset--light">
@@ -124,202 +95,29 @@
     </div>
 </div>
 
-
-<script>
-    function getExchangeRate(fromCurrency, toCurrency, selectedDate) {
-        return fetch(`/Home/GetExchangeRate?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&selectedDate=${selectedDate.toISOString()}`)
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
-            });
-    }
-
-    function calculateConvertedAmount(amount, rate) {
-        console.log('Calculating converted amount...');
-        return (amount * rate).toFixed(6);
-    }
-
-    function displayConvertedAmount(convertedAmount) {
-        console.log('Displaying converted amount:', convertedAmount);
-        document.getElementById("converted-amount").value = convertedAmount;
-    }
-
-    function displayErrorMessage(message) {
-        console.log('Displaying error message:', message);
-        document.getElementById("converted-amount").value = message;
-    }
-
-    function updateConvertedAmount() {
-        console.log('Updating converted amount...');
-        var fromCurrency = document.getElementById("selectedCurrency").value;
-        var amount = parseFloat(document.getElementById("amount").value);
-        var toCurrency = document.getElementById("toCurrency").value;
-        var selectedDate = new Date(document.getElementById("selectedDate").value);
-
-        console.log('Selected currency:', fromCurrency);
-        console.log('Amount:', amount);
-        console.log('Target currency:', toCurrency);
-        console.log('Selected date:', selectedDate);
-
-        getExchangeRate(fromCurrency, toCurrency, selectedDate)
-            .then(data => {
-                if (data.success) {
-                    console.log('Exchange rate data:', data);
-                    var rate = data.rate;
-                    var convertedAmount = calculateConvertedAmount(amount, rate);
-                    displayConvertedAmount(convertedAmount);
-                } else {
-                    console.log('No exchange rate data available.');
-                    displayErrorMessage("No data available for the selected criteria.");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayErrorMessage("An error occurred.");
-            });
-    }
-</script>
+<script src="~/js/currency-converter.js"></script>
 
 
-
-
-
-
-@*// BURASI BASLANGIC 
-@model List<ExchangeRate>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Exchange Rates</title>
-</head>
-<body>
-    <h2>Exchange Rates</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>From Currency</th>
-                <th>To Currency</th>
-                <th>Buy Rate</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rate in Model)
-            {
-                <tr>
-                    <td>@rate.FromCurrency</td>
-                    <td>@rate.ToCurrency</td>
-                    <td>@rate.BuyRate</td>
-                    <td>@rate.Date.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>
-</html>
-// BURASI MODEL CIKTISININ BITISI*@
-
-
-@*<div class="tapestry-wrapper">
-    <!-- ... other content ... -->
-    <div class="preset--light">
-        <!-- ... other content ... -->
-        <div class="tapestry-card-content">
-            <div class="np-theme-personal">
-                <!-- Currency Converter Section -->
-                <div class="_ccConverter_agd50_1">
-                    <div class="_ccCalculator_agd50_10">
-                        <!-- Source Currency Input -->
-                        <div class="form-group">
-                            <label for="source-currency">Source Currency</label>
-                            <select class="form-control" id="source-currency">
-                                <!-- Add options for source currencies -->
-                                <option value="TRY">TRY</option>
-                                <option value="USD">USD</option>
-                                <option value="AUD">AUD</option>
-                                <option value="DKK">DKK</option>
-                                <option value="EUR">EUR</option>
-                                <option value="GBP">GBP</option>
-                                <option value="CHF">CHF</option>
-                                <option value="SEK">SEK</option>
-                                <option value="CAD">CAD</option>
-                                <option value="KWD">KWD</option>
-                                <option value="NOK">NOK</option>
-                                <option value="SAR">SAR</option>
-                                <option value="JPY">JPY</option>
-                                <option value="BGN">BGN</option>
-                                <option value="RON">RON</option>
-                                <option value="RUB">RUB</option>
-                                <option value="IRR">IRR</option>
-                                <option value="CNY">CNY</option>
-                                <option value="PKR">PKR</option>
-                                <option value="QAR">QAR</option>
-                                <option value="KRW">KRW</option>
-                                <option value="AZN">AZN</option>
-                                <option value="AED">AED</option>
-                            </select>
-                        </div>
-
-                        <!-- Amount Input -->
-                        <div class="form-group">
-                            <label for="amount">Amount</label>
-                            <input class="form-control" id="amount" type="number" step="any" placeholder="Enter amount" value="4">
-                        </div>
-
-                        <!-- Target Currency Input -->
-                        <div class="form-group">
-                            <label for="target-currency">Target Currency</label>
-                            <select class="form-control" id="target-currency">
-                                <!-- Add options for target currencies -->
-                                <option value="TRY">TRY</option>
-                                <option value="USD">USD</option>
-                                <option value="AUD">AUD</option>
-                                <option value="DKK">DKK</option>
-                                <option value="EUR">EUR</option>
-                                <option value="GBP">GBP</option>
-                                <option value="CHF">CHF</option>
-                                <option value="SEK">SEK</option>
-                                <option value="CAD">CAD</option>
-                                <option value="KWD">KWD</option>
-                                <option value="NOK">NOK</option>
-                                <option value="SAR">SAR</option>
-                                <option value="JPY">JPY</option>
-                                <option value="BGN">BGN</option>
-                                <option value="RON">RON</option>
-                                <option value="RUB">RUB</option>
-                                <option value="IRR">IRR</option>
-                                <option value="CNY">CNY</option>
-                                <option value="PKR">PKR</option>
-                                <option value="QAR">QAR</option>
-                                <option value="KRW">KRW</option>
-                                <option value="AZN">AZN</option>
-                                <option value="AED">AED</option>
-                            </select>
-                        </div>
-
-                        <!-- Conversion Information -->
-                        <div class="form-group">
-                            <label for="converted-amount">Converted Amount</label>
-                            <input class="form-control" id="converted-amount" type="text">
-
-
-                        </div>
-
-                        <!-- Date Option -->
-                        <div class="form-group">
-                            <label for="selected-date">Selected Date</label>
-                            <input class="form-control" id="selected-date" type="date" value="2023-08-10">
-                        </div>
-
-                        <!-- Convert Button -->
-                        <div class="_ccCalculator__cta_agd50_90">
-                            <button class="btn btn-primary btn-lg btn-block" id="convert-button">Convert</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-*@
+@*<option value="TRY">TRY</option>*@
+@*<option value="USD">USD</option>*@
+@*<option value="AUD">AUD</option>*@
+@*<option value="DKK">DKK</option>*@
+@*<option value="EUR">EUR</option>*@
+@*<option value="GBP">GBP</option>*@
+@*<option value="CHF">CHF</option>*@
+@*<option value="SEK">SEK</option>*@
+@*<option value="CAD">CAD</option>*@
+@*<option value="KWD">KWD</option>*@
+@*<option value="NOK">NOK</option>*@
+@*<option value="SAR">SAR</option>*@
+@*<option value="JPY">JPY</option>*@
+@*<option value="BGN">BGN</option>*@
+@*<option value="RON">RON</option>*@
+@*<option value="RUB">RUB</option>*@
+@*<option value="IRR">IRR</option>*@
+@*<option value="CNY">CNY</option>*@
+@*<option value="PKR">PKR</option>*@
+@*<option value="QAR">QAR</option>*@
+@*<option value="KRW">KRW</option>*@
+@*<option value="AZN">AZN</option>*@
+@*<option value="AED">AED</option>*@

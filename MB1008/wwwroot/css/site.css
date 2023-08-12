@@ -106,3 +106,28 @@ html {
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 40px;
+}
+
+.tapestry-wrapper {
+    flex: 1;
+    background-color: #f0f0f0; /* Example background color */
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%; /* Adjust the width as needed */
+    max-width: 400px;
+}
+
+.exchange-rates-table {
+    flex: 1;
+    background-color: #f0f0f0; /* Example background color */
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%; /* Adjust the width as needed */
+}
