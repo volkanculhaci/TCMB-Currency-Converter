@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace MB1008.Controllers
@@ -7,28 +10,30 @@ namespace MB1008.Controllers
     [ApiController]
     public class ExchangeRatesController : ControllerBase
     {
-        // API'den döviz kuru verilerini çekmek için HttpClient kullanıyoruz
         private readonly HttpClient _httpClient;
 
-        public ExchangeRatesController(HttpClient httpClient)
+        public ExchangeRatesController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient();
         }
-        //Döviz kurlarını tcmb sitesinden çektiğim  method
+
         [HttpGet]
-        public async Task<IActionResult> GetExchangeRates()
+        public async Task<IActionResult> GetExchangeRates(DateTime selectedDate)
         {
-            var endDate = DateTime.Now.Date.ToString("dd-MM-yyyy");
-            var startDate = DateTime.Now.Date.AddDays(-30).ToString("dd-MM-yyyy");
-            string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate={startDate}&endDate={endDate}&type=xml&key=jettt0PrGN";
+            Debug.WriteLine($"selected date: {selectedDate}");
+            string formattedDate = selectedDate.ToString("dd-MM-yyyy");
+            Debug.WriteLine($"Formatted Date: {formattedDate}");
+
+            //string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate={formattedDate}&endDate={formattedDate}&type=xml&key=jettt0PrGN";
+            string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
+
             HttpResponseMessage response = await _httpClient.GetAsync(url);
+
             if (response.IsSuccessStatusCode)
             {
-                //aldığımız veriyi stringe çevirir
                 string xmlString = await response.Content.ReadAsStringAsync();
-                //stringe dönüştürdüğümüz veriyi xml formatına çeviriyoruz
                 XDocument doc = XDocument.Parse(xmlString);
-                //çektiğimiz api dökümünanının sarmaladığı items etiketi altındaki verilere erişip onlarda boş değerler varsa sıfır atıyoruz
+
                 var exchangeRates = doc.Descendants("items").Select(item => new
                 {
                     date = item.Element("Tarih").Value,
@@ -38,7 +43,7 @@ namespace MB1008.Controllers
                     gbp = string.IsNullOrEmpty(item.Element("TP_DK_CHF_S_YTL").Value) ? "0" : item.Element("TP_DK_GBP_S_YTL").Value,
                     jpy = string.IsNullOrEmpty(item.Element("TP_DK_CHF_S_YTL").Value) ? "0" : item.Element("TP_DK_JPY_S_YTL").Value,
                 });
-                //verilerin etiket isimlerini değiştiriyoruz yani örneğin TP_DK_USD_A değilde usd olarak 
+
                 XElement root = new XElement("ExchangeRates",
                     from ex in exchangeRates
                     select new XElement("items",
@@ -50,7 +55,7 @@ namespace MB1008.Controllers
                         new XElement("jpy", ex.jpy)
                     )
                 );
-                //xml formatında gönderiyoruz
+
                 return Content(root.ToString(), "application/xml");
             }
             else

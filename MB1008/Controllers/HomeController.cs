@@ -1,5 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MB1008.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging; // Add this namespace
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MB1008.Controllers
 {
@@ -7,11 +15,13 @@ namespace MB1008.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<HomeController> _logger; // Add this line
 
-        public HomeController(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory)
+        public HomeController(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory, ILogger<HomeController> logger) // Add ILogger<HomeController> logger parameter
         {
             _dbContext = dbContext;
             _httpClientFactory = httpClientFactory;
+            _logger = logger; // Assign logger
         }
 
         public IActionResult Index()
@@ -20,40 +30,21 @@ namespace MB1008.Controllers
             return View(exchangeRates);
         }
 
-
-
-        public IActionResult TCMB_DATA()
+        [HttpGet]
+        public IActionResult GetExchangeRateFromDatabase(DateTime selectedDate)
         {
-            return View();
-        }
+            var exchangeRates = _dbContext.ExchangeRates
+                .Where(r => r.Date.Date == selectedDate.Date)
+                .ToList();
 
-        // last added
-        public async Task<IActionResult> ExchangeRates()
-        {
-            var httpClient = _httpClientFactory.CreateClient();
-            var response = await httpClient.GetAsync("api/ExchangeRates");
-
-            if (response.IsSuccessStatusCode)
+            if (exchangeRates.Any())
             {
-                var xmlContent = await response.Content.ReadAsStringAsync();
-                return View("ExchangeRates", xmlContent);
+                return Json(new { success = true, exchangeRates });
             }
-            else
-            {
-                // Handle error
-                return View("Error");
-            }
+
+            return Json(new { success = false });
         }
 
-
-
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        // ok
         [HttpGet]
         public IActionResult GetExchangeRate(string fromCurrency, string toCurrency, DateTime selectedDate)
         {
@@ -71,6 +62,65 @@ namespace MB1008.Controllers
             return Json(new { success = false });
         }
 
+        [HttpPost]
+        public IActionResult SaveExchangeRatesToDatabase([FromBody] List<ExchangeRate> exchangeRates, DateTime selectedDate)
+        {
+            try
+            {
+                foreach (var rate in exchangeRates)
+                {
+                    rate.Date = selectedDate.Date;
+                    _dbContext.ExchangeRates.Add(rate);
+                }
+
+                _dbContext.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult FetchAndSaveExchangeRates(DateTime selectedDate)
+        {
+            try
+            {
+                _logger.LogInformation("FetchAndSaveExchangeRates started...");
+
+                string formattedDate = selectedDate.ToString("dd-MM-yyyy");
+                _logger.LogInformation($"Formatted Date: {formattedDate}");
+
+                var httpClient = _httpClientFactory.CreateClient();
+                string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
+                _logger.LogInformation($"URL: {url}");
+
+                HttpResponseMessage response = httpClient.GetAsync(url).GetAwaiter().GetResult();
+                _logger.LogInformation($"Response Status Code: {(int)response.StatusCode}");
+
+                // Rest of the code...
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // ...
+
+                    _logger.LogInformation("Exchange rates fetched and saved successfully.");
+                    return Json(new { success = true, message = "Exchange rates fetched and saved successfully." });
+                }
+                else
+                {
+                    _logger.LogError($"Error fetching exchange rates: {response.ReasonPhrase}");
+                    return Json(new { success = false, message = response.ReasonPhrase });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error: {ex.Message}");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -78,4 +128,3 @@ namespace MB1008.Controllers
         }
     }
 }
-

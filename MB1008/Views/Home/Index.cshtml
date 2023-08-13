@@ -6,63 +6,103 @@
 
 <div class="main-container">
     <div class="tapestry-wrapper">
-    <div class="preset--light">
-        <div class="tapestry-card-content">
-            <div class="np-theme-personal">
-                <!-- Currency Converter Section -->
-                <div class="_ccConverter_agd50_1">
-                    <div class="_ccCalculator_agd50_10">
-                        <!-- Source Currency Input -->
-                        <div class="form-group">
-                            <label for="selectedCurrency">Source Currency</label>
-                            <select class="form-control" id="selectedCurrency">
-                                <!-- Add options for source currencies -->
-                                <option value="USD">USD</option>
-                                <option value="TRY">TRY</option>
-                                <option value="EUR">EUR</option>
-                                <!-- Add more currency options as needed -->
-                            </select>
-                        </div>
+        <div class="preset--light">
+            <div class="tapestry-card-content">
+                <div class="np-theme-personal">
+                    <!-- Currency Converter Section -->
+                    <div class="_ccConverter_agd50_1">
+                        <div class="_ccCalculator_agd50_10">
+                            <!-- Source Currency Input -->
+                            <div class="form-group">
+                                <label for="selectedCurrency">Source Currency</label>
+                                <select class="form-control" id="selectedCurrency">
+                                    <!-- Add options for source currencies -->
+                                    <option value="USD">USD</option>
+                                    <option value="TRY">TRY</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="DKK">DKK</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="SEK">SEK</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="KWD">KWD</option>
+                                    <option value="NOK">NOK</option>
+                                    <option value="SAR">SAR</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="BGN">BGN</option>
+                                    <option value="RON">RON</option>
+                                    <option value="RUB">RUB</option>
+                                    <option value="IRR">IRR</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="PKR">PKR</option>
+                                    <option value="QAR">QAR</option>
+                                    <option value="KRW">KRW</option>
+                                    <option value="AZN">AZN</option>
+                                    <option value="AED">AED</option>
+                                    <!-- Add more currency options as needed -->
+                                </select>
+                            </div>
 
-                        <!-- Amount Input -->
-                        <div class="form-group">
-                            <label for="amount">Amount</label>
-                            <input class="form-control" id="amount" type="number" step="any" placeholder="Enter amount" value="4">
-                        </div>
+                            <!-- Amount Input -->
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <input class="form-control" id="amount" type="number" step="any" placeholder="Enter amount" value="4">
+                            </div>
 
-                        <!-- Target Currency Input -->
-                        <div class="form-group">
-                            <label for="toCurrency">Target Currency</label>
-                            <select class="form-control" id="toCurrency">
-                                <!-- Add options for target currencies -->
-                                <option value="TRY">TRY</option>
-                                <option value="USD">USD</option>
-                                <option value="EUR">EUR</option>
-                                <!-- Add more currency options as needed -->
-                            </select>
-                        </div>
+                            <!-- Target Currency Input -->
+                            <div class="form-group">
+                                <label for="toCurrency">Target Currency</label>
+                                <select class="form-control" id="toCurrency">
+                                    <!-- Add options for target currencies -->
+                                    <option value="TRY">TRY</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="DKK">DKK</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="SEK">SEK</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="KWD">KWD</option>
+                                    <option value="NOK">NOK</option>
+                                    <option value="SAR">SAR</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="BGN">BGN</option>
+                                    <option value="RON">RON</option>
+                                    <option value="RUB">RUB</option>
+                                    <option value="IRR">IRR</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="PKR">PKR</option>
+                                    <option value="QAR">QAR</option>
+                                    <option value="KRW">KRW</option>
+                                    <option value="AZN">AZN</option>
+                                    <option value="AED">AED</option>
+                                    <!-- Add more currency options as needed -->
+                                </select>
+                            </div>
 
-                        <!-- Selected Date Input -->
-                        <div class="form-group">
-                            <label for="selectedDate">Selected Date</label>
-                            <input class="form-control" id="selectedDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")">
-                        </div>
+                            <!-- Selected Date Input -->
+                            <div class="form-group">
+                                <label for="selectedDate">Selected Date</label>
+                                <input class="form-control" id="selectedDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
 
-                        <!-- Conversion Information -->
-                        <div class="form-group">
-                            <label for="converted-amount">Converted Amount</label>
-                            <input class="form-control" id="converted-amount" type="text">
-                        </div>
+                            <!-- Conversion Information -->
+                            <div class="form-group">
+                                <label for="converted-amount">Converted Amount</label>
+                                <input class="form-control" id="converted-amount" type="text">
+                            </div>
 
-                        <!-- Convert Button -->
-                        <div class="_ccCalculator__cta_agd50_90">
-                            <button class="btn btn-primary btn-lg btn-block" id="convert-button" onclick="updateConvertedAmount()">Convert</button>
+                            <!-- Convert Button -->
+                            <div class="_ccCalculator__cta_agd50_90">
+                                <button class="btn btn-primary btn-lg btn-block" id="convert-button" onclick="updateConvertedAmount()">Convert</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 
@@ -98,26 +138,3 @@
 <script src="~/js/currency-converter.js"></script>
 
 
-@*<option value="TRY">TRY</option>*@
-@*<option value="USD">USD</option>*@
-@*<option value="AUD">AUD</option>*@
-@*<option value="DKK">DKK</option>*@
-@*<option value="EUR">EUR</option>*@
-@*<option value="GBP">GBP</option>*@
-@*<option value="CHF">CHF</option>*@
-@*<option value="SEK">SEK</option>*@
-@*<option value="CAD">CAD</option>*@
-@*<option value="KWD">KWD</option>*@
-@*<option value="NOK">NOK</option>*@
-@*<option value="SAR">SAR</option>*@
-@*<option value="JPY">JPY</option>*@
-@*<option value="BGN">BGN</option>*@
-@*<option value="RON">RON</option>*@
-@*<option value="RUB">RUB</option>*@
-@*<option value="IRR">IRR</option>*@
-@*<option value="CNY">CNY</option>*@
-@*<option value="PKR">PKR</option>*@
-@*<option value="QAR">QAR</option>*@
-@*<option value="KRW">KRW</option>*@
-@*<option value="AZN">AZN</option>*@
-@*<option value="AED">AED</option>*@
