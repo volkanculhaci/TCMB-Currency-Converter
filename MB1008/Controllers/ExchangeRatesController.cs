@@ -24,8 +24,8 @@ namespace MB1008.Controllers
             string formattedDate = selectedDate.ToString("dd-MM-yyyy");
             Debug.WriteLine($"Formatted Date: {formattedDate}");
 
-            //string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate={formattedDate}&endDate={formattedDate}&type=xml&key=jettt0PrGN";
-            string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
+            string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP_DK_RUB_A-TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate={formattedDate}&endDate={formattedDate}&type=xml&key=jettt0PrGN";
+            //string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
@@ -37,11 +37,12 @@ namespace MB1008.Controllers
                 var exchangeRates = doc.Descendants("items").Select(item => new
                 {
                     date = item.Element("Tarih").Value,
-                    usd = string.IsNullOrEmpty(item.Element("TP_DK_USD_S_YTL").Value) ? "0" : item.Element("TP_DK_USD_S_YTL").Value,
                     eur = string.IsNullOrEmpty(item.Element("TP_DK_EUR_S_YTL").Value) ? "0" : item.Element("TP_DK_EUR_S_YTL").Value,
+                    usd = string.IsNullOrEmpty(item.Element("TP_DK_USD_S_YTL").Value) ? "0" : item.Element("TP_DK_USD_S_YTL").Value,
                     chf = string.IsNullOrEmpty(item.Element("TP_DK_CHF_S_YTL").Value) ? "0" : item.Element("TP_DK_CHF_S_YTL").Value,
-                    gbp = string.IsNullOrEmpty(item.Element("TP_DK_CHF_S_YTL").Value) ? "0" : item.Element("TP_DK_GBP_S_YTL").Value,
-                    jpy = string.IsNullOrEmpty(item.Element("TP_DK_CHF_S_YTL").Value) ? "0" : item.Element("TP_DK_JPY_S_YTL").Value,
+                    gbp = string.IsNullOrEmpty(item.Element("TP_DK_GBP_S_YTL").Value) ? "0" : item.Element("TP_DK_GBP_S_YTL").Value,
+                    jpy = string.IsNullOrEmpty(item.Element("TP_DK_JPY_S_YTL").Value) ? "0" : item.Element("TP_DK_JPY_S_YTL").Value,
+                    rub = string.IsNullOrEmpty(item.Element("TP_DK_RUB_A").Value) ? "0" : item.Element("TP_DK_RUB_A").Value,
                 });
 
                 XElement root = new XElement("ExchangeRates",

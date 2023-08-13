@@ -190,4 +190,5 @@ async function updateConvertedAmount() {
         console.error("Error:", error);
         displayErrorMessage("An error occurred.");
     }
+
 }

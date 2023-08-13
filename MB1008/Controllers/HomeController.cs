@@ -45,22 +45,22 @@ namespace MB1008.Controllers
             return Json(new { success = false });
         }
 
-        [HttpGet]
-        public IActionResult GetExchangeRate(string fromCurrency, string toCurrency, DateTime selectedDate)
-        {
-            var exchangeRate = _dbContext.ExchangeRates
-                .FirstOrDefault(r =>
-                    r.FromCurrency == fromCurrency &&
-                    r.ToCurrency == toCurrency &&
-                    r.Date.Date == selectedDate.Date);
+        //[HttpGet]
+        //public IActionResult GetExchangeRate(string fromCurrency, string toCurrency, DateTime selectedDate)
+        //{
+        //    var exchangeRate = _dbContext.ExchangeRates
+        //        .FirstOrDefault(r =>
+        //            r.FromCurrency == fromCurrency &&
+        //            r.ToCurrency == toCurrency &&
+        //            r.Date.Date == selectedDate.Date);
 
-            if (exchangeRate != null)
-            {
-                return Json(new { success = true, rate = exchangeRate.BuyRate });
-            }
+        //    if (exchangeRate != null)
+        //    {
+        //        return Json(new { success = true, rate = exchangeRate.BuyRate });
+        //    }
 
-            return Json(new { success = false });
-        }
+        //    return Json(new { success = false });
+        //}
 
         [HttpPost]
         public IActionResult SaveExchangeRatesToDatabase([FromBody] List<ExchangeRate> exchangeRates, DateTime selectedDate)
@@ -82,44 +82,44 @@ namespace MB1008.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult FetchAndSaveExchangeRates(DateTime selectedDate)
-        {
-            try
-            {
-                _logger.LogInformation("FetchAndSaveExchangeRates started...");
+        //[HttpPost]
+        //public IActionResult FetchAndSaveExchangeRates(DateTime selectedDate)
+        //{
+        //    try
+        //    {
+        //        _logger.LogInformation("FetchAndSaveExchangeRates started...");
 
-                string formattedDate = selectedDate.ToString("dd-MM-yyyy");
-                _logger.LogInformation($"Formatted Date: {formattedDate}");
+        //        string formattedDate = selectedDate.ToString("dd-MM-yyyy");
+        //        _logger.LogInformation($"Formatted Date: {formattedDate}");
 
-                var httpClient = _httpClientFactory.CreateClient();
-                string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
-                _logger.LogInformation($"URL: {url}");
+        //        var httpClient = _httpClientFactory.CreateClient();
+        //        string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
+        //        _logger.LogInformation($"URL: {url}");
 
-                HttpResponseMessage response = httpClient.GetAsync(url).GetAwaiter().GetResult();
-                _logger.LogInformation($"Response Status Code: {(int)response.StatusCode}");
+        //        HttpResponseMessage response = httpClient.GetAsync(url).GetAwaiter().GetResult();
+        //        _logger.LogInformation($"Response Status Code: {(int)response.StatusCode}");
 
-                // Rest of the code...
+        //        // Rest of the code...
 
-                if (response.IsSuccessStatusCode)
-                {
-                    // ...
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            // ...
 
-                    _logger.LogInformation("Exchange rates fetched and saved successfully.");
-                    return Json(new { success = true, message = "Exchange rates fetched and saved successfully." });
-                }
-                else
-                {
-                    _logger.LogError($"Error fetching exchange rates: {response.ReasonPhrase}");
-                    return Json(new { success = false, message = response.ReasonPhrase });
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error: {ex.Message}");
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+        //            _logger.LogInformation("Exchange rates fetched and saved successfully.");
+        //            return Json(new { success = true, message = "Exchange rates fetched and saved successfully." });
+        //        }
+        //        else
+        //        {
+        //            _logger.LogError($"Error fetching exchange rates: {response.ReasonPhrase}");
+        //            return Json(new { success = false, message = response.ReasonPhrase });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Error: {ex.Message}");
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
