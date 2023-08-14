@@ -81,11 +81,11 @@ async function getExchangeRate(fromCurrency, toCurrency, selectedDate) {
 }
 
 function calculateConvertedAmount(amount, rate) {
-    console.log("Calculating converted amount... +", rate);
+    console.log("Calculating converted amount...", rate);
     return (amount * rate).toFixed(4);
 }
 
-function displayConvertedAmount(convertedAmount, fromCurrency) {
+function displayConvertedAmount(convertedAmount) {
     console.log("Displaying converted amount:", convertedAmount);
     document.getElementById("converted-amount").value = convertedAmount;
 }
@@ -107,7 +107,9 @@ async function updateConvertedAmount() {
     console.log("Target currency:", toCurrency);
     console.log("Selected date:", selectedDate);
 
-    const existingExchangeRates = await getExchangeRateFromDatabase(selectedDate);
+    const existingExchangeRates = await getExchangeRateFromDatabase(
+        selectedDate
+    );
 
     if (existingExchangeRates) {
         const selectedRateFrom = existingExchangeRates.find(
@@ -116,53 +118,128 @@ async function updateConvertedAmount() {
         const selectedRateTo = existingExchangeRates.find(
             (rate) => rate.fromCurrency === toCurrency
         );
-
+        console.log("selectedrate to: ", selectedRateTo); // is json object
+        console.log("to currency ", toCurrency); // is just currency name
         if (fromCurrency === "TRY") {
             console.log("TRY SECILDI");
-            if (toCurrency === "TRY") {
+            if (existingExchangeRates && toCurrency === "TRY") {
                 const convertedAmount = calculateConvertedAmount(amount, 1);
                 displayConvertedAmount(convertedAmount, fromCurrency);
+                console.log("AAAAA");
             } else if (selectedRateTo) {
                 console.log("selectedRateTo bulundu", selectedRateTo);
+                console.log("BBBBB");
                 const convertedAmount = calculateConvertedAmount(
                     amount,
                     1 / selectedRateTo.buyRate
                 );
                 displayConvertedAmount(convertedAmount, fromCurrency);
             } else {
-                console.log("Hedef para birimi veritabanýnda bulunamadý.");
-                displayErrorMessage("Hedef para birimi veritabanýnda bulunamadý.");
+                console.log("CCCCC");
+                console.log("Hedef para birimi veritabanÄ±nda bulunamadÄ±.");
+                displayErrorMessage(
+                    "Hedef para birimi veritabanÄ±nda bulunamadÄ±."
+                );
             }
         } else if (toCurrency === "TRY") {
             if (selectedRateFrom) {
-                const convertedAmount = calculateConvertedAmount(
-                    amount * selectedRateFrom.buyRate,
-                    1
-                );
+                console.log("DDDDD");
+                const convertedAmount = (amount * selectedRateFrom.buyRate, 1);
                 displayConvertedAmount(convertedAmount, fromCurrency);
             } else {
-                console.log("Kaynak para birimi veritabanýnda bulunamadý.");
-                displayErrorMessage("Kaynak para birimi veritabanýnda bulunamadý.");
+                console.log("Kaynak para birimi veritabanÄ±nda bulunamadÄ±.");
+                displayErrorMessage(
+                    "Kaynak para birimi veritabanÄ±nda bulunamadÄ±."
+                );
             }
         } else if (selectedRateFrom && selectedRateTo) {
+            console.log("EEEEEE");
             const convertedAmount = calculateConvertedAmount(
                 amount * selectedRateFrom.buyRate,
                 1 / selectedRateTo.buyRate
             );
             displayConvertedAmount(convertedAmount, fromCurrency);
         } else {
-            console.log("Kurlar veritabanýnda bulunamadý.");
-            displayErrorMessage("Kurlar veritabanýnda bulunamadý.");
+            console.log("XXXXX", selectedRateFrom);
+            console.log("Kurlar veritabanÄ±nda bulunamadÄ±.");
+            displayErrorMessage("Kurlar veritabanÄ±nda bulunamadÄ±.");
         }
     } else {
-        console.log("Veritabanýndan kurlar bulunamadý, TCMB'den alýnýyor...");
-        const exchangeRates = await getExchangeRateFromTCMB(fromCurrency, toCurrency, selectedDate);
+        console.log("VeritabanÄ±ndan kurlar bulunamadÄ±, TCMB'den alÄ±nÄ±yor...");
+        const exchangeRates = await getExchangeRateFromTCMB(
+            fromCurrency,
+            toCurrency,
+            selectedDate
+        ); // NEDEN SADECE SELECTED DATE GONDERMIYORUM
 
         if (exchangeRates) {
             const fromRate = exchangeRates[fromCurrency.toLowerCase()];
             const toRate = exchangeRates[toCurrency.toLowerCase()];
+            console.log("fromrate ve torate:", fromRate, toRate);
+            console.log("fromCurrency: ", fromCurrency);
 
-            if (fromRate && toRate) {
+            if (fromCurrency === "TRY") {
+                // BU IF OKAY. ILK TRY GIRIYORUZ. IKINCI
+                console.log("yyyyy");
+                console.log("amount", amount);
+                console.log("toRate", toRate);
+
+                const convertedAmount =
+                    parseFloat(amount) * (1 / parseFloat(toRate));
+                console.log("converted miktar:", convertedAmount);
+                displayConvertedAmount(convertedAmount);
+
+                const exchangeRateObjects = [];
+                for (const currency in exchangeRates) {
+                    if (currency !== "date") {
+                        exchangeRateObjects.push({
+                            fromCurrency: currency.toUpperCase(),
+                            toCurrency: "TRY",
+                            buyRate: exchangeRates[currency],
+                            date: exchangeRates.date,
+                        });
+                    }
+                }
+
+                const savedToDatabase = await saveExchangeRatesToDatabase(
+                    exchangeRateObjects,
+                    selectedDate
+                );
+
+                if (savedToDatabase) {
+                    console.log("Kurlar veritabanÄ±na kaydedildi.");
+                } else {
+                    console.error("Kurlar veritabanÄ±na kaydedilemedi.");
+                }
+            } else if (toCurrency === "TRY") {
+                const convertedAmount = amount * fromRate;
+                console.log("converted miktar:", convertedAmount);
+                displayConvertedAmount(convertedAmount);
+
+                const exchangeRateObjects = [];
+                for (const currency in exchangeRates) {
+                    if (currency !== "date") {
+                        exchangeRateObjects.push({
+                            fromCurrency: currency.toUpperCase(),
+                            toCurrency: "TRY",
+                            buyRate: exchangeRates[currency],
+                            date: exchangeRates.date,
+                        });
+                    }
+                }
+
+                const savedToDatabase = await saveExchangeRatesToDatabase(
+                    exchangeRateObjects,
+                    selectedDate
+                );
+
+                if (savedToDatabase) {
+                    console.log("Kurlar veritabanÄ±na kaydedildi.");
+                } else {
+                    console.error("Kurlar veritabanÄ±na kaydedilemedi.");
+                }
+            } else if (fromRate && toRate) {
+                // nonTRY conversions
                 const convertedAmount = calculateConvertedAmount(
                     amount * fromRate,
                     1 / toRate
@@ -188,17 +265,17 @@ async function updateConvertedAmount() {
                 );
 
                 if (savedToDatabase) {
-                    console.log("Kurlar veritabanýna kaydedildi.");
+                    console.log("Kurlar veritabanÄ±na kaydedildi.");
                 } else {
-                    console.error("Kurlar veritabanýna kaydedilemedi.");
+                    console.error("Kurlar veritabanÄ±na kaydedilemedi.");
                 }
             } else {
-                console.log("Kurlar veritabanýndan alýnýrken hata oluþtu.");
-                console.log("Veri mevcut deðil.");
-                displayErrorMessage("Veri mevcut deðil.");
+                console.log("Kurlar veritabanÄ±ndan alÄ±nÄ±rken hata oluÅŸtu.");
+                console.log("Veri mevcut deÄŸil.");
+                displayErrorMessage("Veri mevcut deÄŸil.");
             }
         } else {
-            console.log("Kurlar TCMB'den alýnýrken hata oluþtu.");
+            console.log("Kurlar TCMB'den alÄ±nÄ±rken hata oluÅŸtu.");
         }
     }
 }
