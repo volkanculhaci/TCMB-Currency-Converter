@@ -33,8 +33,8 @@ This web application allows users to convert currency exchange rates using data 
 
 ## Screenshots
 
-![Screenshot 1](/screenshots/screenshot1.png)
-![Screenshot 2](/screenshots/screenshot2.png)
+![App](MB1008/screenshots/screenshot1.png)
+![Database](MB1008/screenshots/screenshot2.png)
 
 ## License
 
@@ -77,8 +77,8 @@ Bu web uygulaması, kullanıcıların Türkiye Cumhuriyet Merkez Bankası (TCMB)
 
 ## Ekran Görüntüleri
 
-![Ekran Görüntüsü 1](/screenshots/screenshot1.png)
-![Ekran Görüntüsü 2](/screenshots/screenshot2.png)
+![Uygulama](MB1008/screenshots/screenshot1.png)
+![Veritabanı](MB1008/screenshots/screenshot2.png)
 
 ## Lisans
 
