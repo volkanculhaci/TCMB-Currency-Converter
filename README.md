@@ -16,6 +16,7 @@ This web application allows users to convert currency exchange rates using data 
 - ASP.NET Core MVC
 - Entity Framework Core
 - HTML, CSS, JavaScript
+- MySQL
 
 ## Getting Started
 
@@ -70,9 +71,9 @@ Bu web uygulaması, kullanıcıların Türkiye Cumhuriyet Merkez Bankası (TCMB)
 ## Kullanılan Teknolojiler
 
 - ASP.NET Core MVC
-- Entity Framework Çekirdek
+- Entity Framework Core
 - HTML, CSS, JavaScript
-
+- MySQL
 ## Başlarken
 
 1. Depoyu yerel makinenize klonlayın.
