@@ -25,7 +25,7 @@ namespace MB1008.Controllers
             Debug.WriteLine($"Formatted Date: {formattedDate}");
 
             string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP_DK_RUB_A-TP.DK.USD.A.YTL-TP.DK.EUR.A.YTL-TP.DK.CHF.A.YTL-TP.DK.GBP.A.YTL-TP.DK.JPY.A.YTL-TP.DK.AUD.A-TP.DK.DKK.A-TP.DK.KWD.A-TP.DK.NOK.A&startDate={formattedDate}&endDate={formattedDate}&type=xml&key=jettt0PrGN";
-            //string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=jettt0PrGN";
+            //string url = $"https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S.YTL-TP.DK.EUR.S.YTL-TP.DK.CHF.S.YTL-TP.DK.GBP.S.YTL-TP.DK.JPY.S.YTL&startDate=10-08-2023&endDate=10-08-2023&type=xml&key=XXXXXXX";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 

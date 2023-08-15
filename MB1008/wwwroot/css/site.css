@@ -1,24 +1,25 @@
+/* Set base font size */
 html {
-  font-size: 16px;
+    font-size: 16px;
 }
 
+/* Media query for larger screens */
 @media (min-width: 768px) {
-  html {
-    font-size: 18px;
-  }
+    html {
+        font-size: 18px;
+    }
 }
-
 
 /* Override Bootstrap button styles */
 .btn-primary {
-    background-color: #ff9900;
-    border-color: #ff9900;
+    background-color: #FF9900;
+    border-color: #FF9900;
     color: white;
 }
 
-/* Add background color to the form */
+/* Style the form container */
 .form-container {
-    background-color: #f7f7f7;
+    background-color: #F7F7F7;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -32,12 +33,12 @@ html {
 }
 
 .dropdown-item {
-    color: #fff;
+    color: #FFF;
 }
 
 /* Style the conversion result */
 .result-container {
-    background-color: #3399ff;
+    background-color: #3399FF;
     padding: 10px;
     color: white;
     border-radius: 5px;
@@ -50,12 +51,12 @@ html {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #CCC;
 }
 
 /* Style the convert button */
 .convert-button {
-    background-color: #4caf50;
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -65,13 +66,13 @@ html {
 }
 
     .convert-button:hover {
-        background-color: #45a049;
+        background-color: #45A049;
     }
 
 /* Style the date picker */
 .date-picker {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #CCC;
     border-radius: 5px;
 }
 
@@ -92,7 +93,7 @@ html {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #CCC;
 }
 
 /* Style the header */
@@ -101,33 +102,39 @@ html {
     margin-bottom: 20px;
 }
 
-/* Style the container */
+/* Style the main container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Style the main container and its children */
 .main-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 20px;
     gap: 40px;
+    background-color: #ECECEC; /* Example background color */
 }
 
+/* Style the left tapestry wrapper */
 .tapestry-wrapper {
     flex: 1;
-    background-color: #f0f0f0; /* Example background color */
+    background-color: #FFF; /* Example background color */
     padding: 20px;
     border-radius: 10px;
     width: 70%; /* Adjust the width as needed */
     max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Style the right exchange rates table */
 .exchange-rates-table {
     flex: 1;
-    background-color: #f0f0f0; /* Example background color */
+    background-color: #FFF; /* Example background color */
     padding: 20px;
     border-radius: 10px;
     width: 30%; /* Adjust the width as needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
