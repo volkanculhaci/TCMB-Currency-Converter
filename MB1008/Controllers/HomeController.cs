@@ -7,13 +7,13 @@ namespace MB1008.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<HomeController> _logger; // Add this line
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory, ILogger<HomeController> logger) // Add ILogger<HomeController> logger parameter
+        public HomeController(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory, ILogger<HomeController> logger)
         {
             _dbContext = dbContext;
             _httpClientFactory = httpClientFactory;
-            _logger = logger; // Assign logger
+            _logger = logger;
         }
 
         public IActionResult Index()
