@@ -17,6 +17,17 @@ This web application allows users to convert currency exchange rates using data 
 - Entity Framework Core
 - HTML, CSS, JavaScript
 - MySQL
+- 
+## Versions
+
+| Id                                   | Versions      |
+|--------------------------------------|---------------|
+| Microsoft.VisualStudio.Web.CodeGeneration.Design | {6.0.16}      |
+| log4net.Extensions.AspNetCore         | {1.0.0}       |
+| Pomelo.EntityFrameworkCore.MySql      | {6.0.1}       |
+| Microsoft.EntityFrameworkCore          | {6.0.3}       |
+| Newtonsoft.Json                       | {13.0.3}      |
+| Microsoft.EntityFrameworkCore.Tools  | {6.0.3}       |
 
 ## Getting Started
 
@@ -74,6 +85,18 @@ Bu web uygulaması, kullanıcıların Türkiye Cumhuriyet Merkez Bankası (TCMB)
 - Entity Framework Core
 - HTML, CSS, JavaScript
 - MySQL
+
+## Versiyonlar
+
+| Id                                   | Versions      |
+|--------------------------------------|---------------|
+| Microsoft.VisualStudio.Web.CodeGeneration.Design | {6.0.16}      |
+| log4net.Extensions.AspNetCore         | {1.0.0}       |
+| Pomelo.EntityFrameworkCore.MySql      | {6.0.1}       |
+| Microsoft.EntityFrameworkCore          | {6.0.3}       |
+| Newtonsoft.Json                       | {13.0.3}      |
+| Microsoft.EntityFrameworkCore.Tools  | {6.0.3}       |
+
 ## Başlarken
 
 1. Depoyu yerel makinenize klonlayın.
