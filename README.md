@@ -17,7 +17,7 @@ This web application allows users to convert currency exchange rates using data 
 - Entity Framework Core
 - HTML, CSS, JavaScript
 - MySQL
-- 
+
 ## Versions
 
 | Id                                   | Versions      |
