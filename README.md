@@ -36,6 +36,18 @@ This web application allows users to convert currency exchange rates using data 
 ![App](MB1008/screenshots/screenshot1.png)
 ![Database](MB1008/screenshots/screenshot2.png)
 
+## Important Note:
+Please be aware that TCMB does not update currency rates on weekends and holidays. Therefore, the system does not calculate information for these specific days.
+
+## Suggestions for Improvement:
+1. For potential usage expansion, consider creating a new currency table. This step can enhance efficiency and prevent redundancy.
+
+2. To enhance user experience, ensure that weekends and holidays are blocked on the calendar when selecting dates.
+
+3. The Exchange Rates table on the right-hand side should automatically update itself when a new date is selected.
+
+4. Consider removing the Convert button for a more streamlined interface.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
@@ -79,6 +91,18 @@ Bu web uygulaması, kullanıcıların Türkiye Cumhuriyet Merkez Bankası (TCMB)
 
 ![Uygulama](MB1008/screenshots/screenshot1.png)
 ![Veritabanı](MB1008/screenshots/screenshot2.png)
+
+## Önemli Not:
+TCMB'nin hafta sonları ve tatil günlerinde döviz kurlarını güncellemediğini lütfen unutmayın. Bu nedenle, sistem bu belirli günler için bilgi hesaplamaz.
+
+## İyileştirme Önerileri:
+1. Potansiyel kullanım genişlemesi için, yeni bir para birimi tablosu oluşturmayı düşünün. Bu adım verimliliği artırabilir ve fazlalığı önleyebilir.
+
+2. Kullanıcı deneyimini geliştirmek için, tarihleri seçerken hafta sonlarının ve tatillerin takvimde engellendiğinden emin olun.
+
+3. Yeni bir tarih seçildiğinde sağ taraftaki Döviz Kurları tablosu kendini otomatik olarak güncellemelidir.
+
+4. Daha akıcı bir arayüz için Convert butonu kaldırılmalıdır.
 
 ## Lisans
 
